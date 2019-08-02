@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        ul li{
+            width: 77px;
+            height: 77px;
+            /* background: url(images/3_1.png) */
+        }
+        /* ul li:nth-child(1){
+            background: url(images/ico_01.png)
+        }
+        ul li:nth-child(2){
+            background: url(images/ico_02.png)
+        }
+        ul li:nth-child(3){
+            background: url(images/ico_03.png)
+        }
+        ul li:nth-child(4){
+            background: url(images/ico_04.png)
+        }
+        ul li:nth-child(5){
+            background: url(images/ico_05.png)
+        } */
+
+
+       /*  ul li:nth-child(1){
+            background-position: 0 0;
+        }
+        ul li:nth-child(2){
+            background-position: -77px 0;
+        }
+        ul li:nth-child(3){
+            background-position: -154px 0;
+        } */
+       /*  ul li:nth-child(4){
+            background: url(images/ico_04.png)
+        }
+        ul li:nth-child(5){
+            background: url(images/ico_05.png)
+        } */
+
+        #box{
+            width: 100px;
+            height: 100px;
+            background: green;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+    <div></div>
+
+    <!-- 
+    defer    
+        1. 解析html
+        2. 遇到带defer属性的script标签，继续解析html，同时下载script引入的文件
+        3. 浏览器完成解析HTML，然后执行下载的脚本（按书写顺序执行）
+
+
+    async
+        1. 解析html
+        2. 遇到带async属性的script标签。继续解析html，同时下载script引入的文件
+        3. js文件下载完毕，浏览器暂停解析html，开始执行js
+        4. js执行完毕，浏览器接着解析html
+
+     -->
+    <!-- <script src="js/jquery-3.4.1.js" defer></script>
+    <script src="js/jquery-3.4.1.min.js" async></script> -->
+
+    <div id="box"></div>
+
+    <script>
+        /*
+            一、页面级的优化
+                1、CSS Spritesr
+                2、使用CDN
+                3、压缩合并代码
+                4、使用DNS预解析
+            二、代码级别的优化 
+                1、减少DOM操作
+				2、异步加载
+				3、事件代理
+				4、使用requestAnimationFrame来替代setTimeout和setInterval
+				5、图片懒加载
+
+                60Hz
+
+                16.7ms  1000ms/60Hz=16.7
+         */
+
+        var lis=document.querySelectorAll('li');
+        var len=lis.length;
+        var ul=document.querySelector('ul');
+
+        /* for(var i=0;i<len;i++){
+            lis[i].onclick=function(){
+
+            }
+        } */
+
+        ul.onclick=function(ev){
+           //console.log(ev.target.tagName);
+
+            if(ev.target.tagName.toLowerCase()=='li'){
+                console.log(ev.target.innerHTML)
+            }
+        }
+
+
+        var div=document.querySelector('div');
+
+        console.time('kaivon');
+        for(var i=0;i<5000;i++){
+            div.innerHTML+='a';
+        }
+        console.timeEnd('kaivon');
+        
+
+        console.time('kaivon');
+        var str='';
+        for(var i=0;i<5000;i++){
+            str+='a';
+        }
+        div.innerHTML=str;
+        console.timeEnd('kaivon');
+
+
+
+        var box=document.getElementById('box');
+        var timer=requestAnimationFrame(function fn(){
+            box.style.width=box.offsetWidth+5+'px';
+            box.innerHTML=box.offsetWidth/5+'%';
+
+           // console.log(this);
+
+            timer=requestAnimationFrame(fn);
+
+            if(box.offsetWidth>=500){
+                cancelAnimationFrame(timer);
+            }
+        });
+
+
+        function getTopValue(obj){
+            var top=0;
+
+            while(obj.offsetParet){
+                top+=obj.offsetTop;
+
+                obj=obj.offsetParet;
+            }
+        }
+    </script>
+    
+
+
+    <!-- <img src="images/ico.png" alt="" data-s='http://www.baidu.com/12.jpg'> -->
+    <div>
+        <div></div>
+    </div>
+   
+</body>
+</html>
